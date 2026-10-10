@@ -606,3 +606,24 @@ html, .character-drawer, .inhabitant-list, .dialog, .archive-entries { scrollbar
  .world-stage { height: calc(100svh - 104px); }
  .creation-page { min-height: calc(100svh - 104px); }
 }
+
+/* Prominent contract address action. */
+.view-home .hero-actions { align-items: flex-start; }
+.contract-control { position: relative; min-width: 0; }
+.view-home .hero-actions .contract-button { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; padding: 12px 18px; border: 1px solid #ffffff; border-radius: 999px; color: #1e2517; background: #d9efb0; box-shadow: 0 5px 0 #ffffff38; transition: transform .18s, background .18s; }
+.contract-label { font-size: 17px; font-weight: 800; letter-spacing: -.04em; }
+.contract-address { font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+.view-home .hero-actions .contract-button:hover { background: #e8ffbf; transform: translateY(-2px); }
+.view-home .hero-actions .contract-button:active { transform: translateY(2px); }
+.contract-button:focus-visible { outline: 3px solid #ffffff; outline-offset: 5px; }
+.contract-button:disabled { opacity: .65; cursor: default; }
+.contract-feedback { display: block; position: absolute; top: calc(100% + 9px); left: 0; font-size: 12px; color: #ffffff; }
+.contract-fallback { margin-top: 32px; max-width: 100%; width: 220px; }
+@media (max-width: 760px) {
+ .view-home .hero-actions { flex-wrap: wrap; gap: 20px; }
+ .view-home .hero-actions .contract-button { min-height: 52px; padding: 12px 17px; }
+}
+@media (prefers-reduced-motion: reduce) {
+ .view-home .hero-actions .contract-button { transition: none; }
+ .view-home .hero-actions .contract-button:hover, .view-home .hero-actions .contract-button:active { transform: none; }
+}

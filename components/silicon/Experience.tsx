@@ -6,6 +6,7 @@ import {personality, type Agent, type Encounter, type WorldSnapshot} from '@/lib
 import {worldviewQuestions} from '@/lib/silicon/worldview';
 import {advanceDemo, agentHistory, createDemo, createShared, getConfig, importLegacyShared, initialWorld, legacyImportCandidate, loadDemo, snapshot, sharedTick} from '@/lib/silicon/client';
 import AgentXLink from './AgentXLink';
+import ContractButton from './ContractButton';
 
 const WorldScene = lazy(() => import('./WorldScene'));
 const AvatarPreview = lazy(() => import('./WorldScene').then(m => ({default:m.AvatarPreview})));
@@ -112,6 +113,7 @@ function AgentPanel({agent, world, following, mine, reduced, onClose, onFollow, 
 
 export default function Experience({initialView, profileId}:{initialView:View; profileId?:string}) {
  const [view,setView] = useState<View>(initialView);
+ const [contractAddress,setContractAddress] = useState('');
  const [world,setWorld] = useState<WorldSnapshot>(()=>({...initialWorld(),agents:[],totalPopulation:0,awakePopulation:0}));
  const [ready,setReady] = useState(false), [connected,setConnected] = useState(false), [error,setError] = useState('');
  const [selectedId,setSelectedId] = useState<string|null>(profileId || null), [follow,setFollow] = useState<string|null>(null);
@@ -140,7 +142,7 @@ export default function Experience({initialView, profileId}:{initialView:View; p
  useEffect(()=>{const change=(event:StorageEvent)=>{if(event.key==='silicon-world-v1' && worldRef.current.mode==='local-demo')acceptSnapshot(loadDemo());};window.addEventListener('storage',change);return()=>window.removeEventListener('storage',change);},[acceptSnapshot]);
  const initialise = useCallback(async()=>{
   setError('');
-  try {const config=await getConfig();acceptSnapshot(config.mode==='local-demo'?loadDemo():await snapshot());setLegacyAgent(config.mode==='local-demo'?null:legacyImportCandidate());setConnected(true);}
+  try {const config=await getConfig();setContractAddress(config.contractAddress||'');acceptSnapshot(config.mode==='local-demo'?loadDemo():await snapshot());setLegacyAgent(config.mode==='local-demo'?null:legacyImportCandidate());setConnected(true);}
   catch(reason){setError((reason as Error).message);setConnected(false);}
   finally {setReady(true);}
  },[acceptSnapshot]);
@@ -231,7 +233,7 @@ export default function Experience({initialView, profileId}:{initialView:View; p
   </section> : <section className={view==='home'?'hero':'world-stage'} aria-label="Interactive agent world">
    <div className="scene-container"><Suspense fallback={<LoadingScene/>}><WorldScene agents={visibleAgents} encounters={world.encounters} hero={view==='home'} selectedId={view==='home'?null:selectedId} onSelect={select} onLandmark={value=>{if(value==='archive')setArchive(true);else setLandmark(value);}} followId={view==='home'?null:follow} resetKey={reset} serverTime={world.serverTime} reducedMotion={reduced}/></Suspense>{view==='home'&&<p className="hero-scene-hint">Drag to look around</p>}</div>
    {view==='home' ? <>
-    <div className="hero-copy"><h1>Create an <span className="hero-agent-word">AI Agent.<svg aria-hidden="true" focusable="false" viewBox="0 0 220 16"><path d="M4 10 C60 17 139 3 214 7"/></svg></span><br/><span>It explores the world.</span></h1><p>Give it a worldview and a name.<br/>Follow its thoughts and conversations.</p><div className="hero-actions"><button className="primary" onClick={()=>mine?followAgent(mine.id):go('create')}>{mine?'Find my agent':'Create an agent'}<ArrowRight size={18}/></button><button className="text-button" onClick={()=>go('world')}>Enter the world <ArrowRight size={17}/></button></div></div>
+    <div className="hero-copy"><h1>Create an <span className="hero-agent-word">AI Agent.<svg aria-hidden="true" focusable="false" viewBox="0 0 220 16"><path d="M4 10 C60 17 139 3 214 7"/></svg></span><br/><span>It explores the world.</span></h1><p>Give it a worldview and a name.<br/>Follow its thoughts and conversations.</p><div className="hero-actions"><button className="primary" onClick={()=>mine?followAgent(mine.id):go('create')}>{mine?'Find my agent':'Create an agent'}<ArrowRight size={18}/></button><ContractButton address={contractAddress}/></div></div>
    </> : <>
     <div className="world-title"><h1>The world</h1><span className="mode-chip"><span className="status-dot"/>{modeLabel}</span><p>{world.totalPopulation??world.agents.length} agents</p></div>
     <div className="world-tools"><button className="tool" aria-label={mine?'Follow my agent':'Create an agent'} onClick={()=>mine?followAgent(mine.id):go('create')}><Focus size={17}/><span>{mine?'Follow mine':'Create an agent'}</span></button><button className="tool" aria-label="Reset view" onClick={()=>{setFollow(null);setReset(value=>value+1);}}><RotateCcw size={17}/><span>Reset view</span></button><button className={`tool ${list?'chosen':''}`} aria-label="Agents" aria-pressed={list} onClick={()=>setList(!list)}><Users size={17}/><span>Agents</span></button><button className="tool" aria-label="Conversations" onClick={()=>setArchive(true)}><MessageSquare size={17}/><span>Conversations</span></button></div>

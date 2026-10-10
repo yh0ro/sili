@@ -17,6 +17,8 @@ If configuring a web service manually:
 
 ## Enable X linking
 
+The landing CA button copies `XXXXX` until you set `CONTRACT_ADDRESS` in Render's Environment settings. Save and redeploy to replace it with the real public contract address; no source edit or build-time public variable is required.
+
 After the initial deploy, copy the public origin, such as `https://silicon-man-xxxx.onrender.com`. In **Render → service → Environment**, add:
 
 | Variable | Value |

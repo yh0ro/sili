@@ -3,7 +3,7 @@ import {foundingAgents,makeAgent,personality,type WorldSnapshot} from './domain'
 import {simulateDemo} from './simulation';
 const KEY='silicon-world-v1'; const AUTH='silicon-auth-v1';
 type Session={access_token:string;refresh_token:string;expires_at:number};
-export type Config={mode:WorldSnapshot['mode'];storage?:'d1'|'supabase';supabaseUrl?:string;supabaseKey?:string;publishableKey?:string;status?:string};
+export type Config={mode:WorldSnapshot['mode'];storage?:'d1'|'supabase';supabaseUrl?:string;supabaseKey?:string;publishableKey?:string;status?:string;contractAddress?:string};
 let config:Config={mode:'local-demo'};
 let session:Session|null=null;
 export function initialWorld():WorldSnapshot {const now=Date.now();return {agents:foundingAgents(now),events:[],encounters:[],serverTime:now,mode:'local-demo',totalPopulation:5,awakePopulation:5};}

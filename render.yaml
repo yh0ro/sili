@@ -20,3 +20,5 @@ services:
         value: /var/data/silicon.sqlite
       - key: WORLD_MODE
         value: shared-scripted
+      - key: CONTRACT_ADDRESS
+        value: XXXXX
