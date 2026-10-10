@@ -114,6 +114,7 @@ function AgentPanel({agent, world, following, mine, reduced, onClose, onFollow, 
 export default function Experience({initialView, profileId}:{initialView:View; profileId?:string}) {
  const [view,setView] = useState<View>(initialView);
  const [contractAddress,setContractAddress] = useState('');
+ useEffect(()=>{let active=true;const refresh=()=>{if(document.visibilityState==='visible')void getConfig().then(config=>{if(active)setContractAddress(config.contractAddress||'');}).catch(()=>{});};const timer=setInterval(refresh,5000);window.addEventListener('focus',refresh);return()=>{active=false;clearInterval(timer);window.removeEventListener('focus',refresh);};},[]);
  const [world,setWorld] = useState<WorldSnapshot>(()=>({...initialWorld(),agents:[],totalPopulation:0,awakePopulation:0}));
  const [ready,setReady] = useState(false), [connected,setConnected] = useState(false), [error,setError] = useState('');
  const [selectedId,setSelectedId] = useState<string|null>(profileId || null), [follow,setFollow] = useState<string|null>(null);

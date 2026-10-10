@@ -1,3 +1,9 @@
+# Instant contract-address admin — 11 October 2026
+
+- Added `/admin` with password login, a saved address and logout. Set a unique `ADMIN_PASSWORD` of at least 16 characters once in Render. Address changes are persisted in the shared database and override the environment fallback without redeploying. Visible pages refresh the public CA every five seconds.
+- Admin cookies are HttpOnly, SameSite=Strict and Secure on HTTPS. HMAC signatures, four-hour expiry, password rotation, strict origin checks and a shared ten-requests/minute/IP budget protect the endpoints. No admin password is shipped to the browser.
+- All 38 tests pass, including wrong passwords, tampering, expiry, rotation, cross-origin rejection and address persistence across reopening. Render production build and TypeScript pass. Actual browser login and address saving succeed; public config reflects the saved address immediately. Anonymous reads/writes return 401 and a foreign-origin login returns 403. Real deployment still requires the Render password environment setting.
+
 # Render deployment support — 10 October 2026
 
 - Added a Render Blueprint for one paid Node instance with a persistent disk, a Next production build/server, runtime SQL migrations with checksum validation, and a transactional SQLite adapter for the shared world. X linking and rate limits use the persistent database.

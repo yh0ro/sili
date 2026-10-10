@@ -3,6 +3,7 @@ export const agents = sqliteTable('silicon_agents', {
  id:text('id').primaryKey(), owner:text('owner').unique(), data:text('data').notNull(), createdAt:integer('created_at').notNull(), lastAwake:integer('last_awake').notNull().default(0),
 }, table => [index('silicon_agents_awake').on(table.lastAwake)]);
 export const sessions = sqliteTable('silicon_sessions', {hash:text('hash').primaryKey(),lastSeen:integer('last_seen').notNull(),createdAt:integer('created_at').notNull()});
+export const settings = sqliteTable('silicon_settings', {key:text('key').primaryKey(),value:text('value').notNull()});
 export const rateLimits = sqliteTable('silicon_rate_limits', {
  key:text('key').primaryKey(),count:integer('count').notNull(),expiresAt:integer('expires_at').notNull(),
 },table=>[index('silicon_rate_limits_expiry').on(table.expiresAt)]);

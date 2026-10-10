@@ -608,6 +608,16 @@ html, .character-drawer, .inhabitant-list, .dialog, .archive-entries { scrollbar
 }
 
 /* Prominent contract address action. */
+.admin-page { min-height: 100svh; display: grid; place-items: center; padding: 24px; background: var(--moss-gradient); }
+.admin-card { width: 100%; max-width: 480px; padding: 32px; border: 1px solid #ffffff30; border-radius: 24px; background: #ffffff08; }
+.admin-home { display: inline-block; margin-bottom: 28px; font-size: 14px; }
+.admin-card h1 { font-size: 30px; margin-bottom: 12px; }
+.admin-card form { display: grid; gap: 16px; margin: 28px 0 16px; }
+.admin-card input { width: 100%; min-width: 0; border: 1px solid #ffffff50; border-radius: 10px; padding: 14px; background: #ffffff0a; color: white; }
+.admin-card .primary { padding: 14px; border-radius: 999px; }
+.admin-current { margin-top: 24px; }
+.admin-current code { display: block; margin-top: 8px; overflow-wrap: anywhere; }
+.admin-message { font-size: 14px; line-height: 1.5; margin-top: 20px; }
 .view-home .hero-actions { align-items: flex-start; }
 .contract-control { position: relative; min-width: 0; }
 .view-home .hero-actions .contract-button { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; padding: 12px 18px; border: 1px solid #ffffff; border-radius: 999px; color: #1e2517; background: #d9efb0; box-shadow: 0 5px 0 #ffffff38; transition: transform .18s, background .18s; }

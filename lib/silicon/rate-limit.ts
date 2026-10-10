@@ -5,7 +5,9 @@ export function rateLimitPolicies(request: Request): Policy[] {
  const path = new URL(request.url).pathname;
  if (!path.startsWith('/api/')) return [];
  const policies: Policy[] = [{ bucket: 'api', limit: 240, windowMs: minute }];
- if (request.method === 'POST' && ['/api/successor', '/api/successor/import'].includes(path)) {
+ if (path.startsWith('/api/admin/')) {
+  policies.push({bucket:'admin',limit:10,windowMs:minute});
+ } else if (request.method === 'POST' && ['/api/successor', '/api/successor/import'].includes(path)) {
   policies.push({ bucket: 'creation', limit: 5, windowMs: 60 * minute });
  } else if (path.startsWith('/api/x/') && path !== '/api/x/status') {
   policies.push({ bucket: 'x', limit: 10, windowMs: minute });

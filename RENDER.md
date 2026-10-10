@@ -17,7 +17,7 @@ If configuring a web service manually:
 
 ## Enable X linking
 
-The landing CA button copies `XXXXX` until you set `CONTRACT_ADDRESS` in Render's Environment settings. Save and redeploy to replace it with the real public contract address; no source edit or build-time public variable is required.
+For instant CA updates, set `ADMIN_PASSWORD` in Render's Environment settings to a unique password of at least 16 characters and deploy this update once. Open `https://YOUR-HOST/admin`, log in and save the address. It is stored on the persistent disk and overrides `CONTRACT_ADDRESS`. Existing visible pages update within 5 seconds; refresh shows it immediately. Future CA changes require no redeploy. Admin sessions expire after four hours. Changing the password invalidates sessions. Admin endpoints share a 10 requests/minute/IP limit. Before the first admin save, the CA uses `CONTRACT_ADDRESS`, or `XXXXX` when unset. Do not put your admin password in source, GitHub or the public contract-address variable.
 
 After the initial deploy, copy the public origin, such as `https://silicon-man-xxxx.onrender.com`. In **Render → service → Environment**, add:
 

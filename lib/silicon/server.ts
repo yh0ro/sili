@@ -8,7 +8,8 @@ export function config(){
  const ai=database&&process.env.WORLD_MODE==='shared-ai'&&!!(process.env.OPENROUTER_API_KEY&&process.env.OPENROUTER_MODEL);
  return {mode:ai?'shared-ai':'shared-scripted',storage:anyDatabase?'supabase':'d1',supabaseUrl:anyDatabase?process.env.SUPABASE_URL??null:null,publishableKey:anyDatabase?process.env.SUPABASE_PUBLISHABLE_KEY??null:null,...(anyDatabase&&!database?{configurationError:'The shared world configuration is incomplete. Please configure all three Supabase variables.'}:{})} as const;
 }
-export async function sharedD1(){let database:D1Database;if(process.env.SQLITE_PATH){const {getSQLiteDatabase}=await import('./sqlite.mjs');database=getSQLiteDatabase() as unknown as D1Database;}else{const {env}=await import('cloudflare:workers');if(!env.DB)throw new Error('The global world database is unavailable. Please retry shortly.');database=env.DB;}const {SharedWorld}=await import('./d1');return new SharedWorld(database);}
+export async function sharedDatabase(){if(process.env.SQLITE_PATH){const {getSQLiteDatabase}=await import('./sqlite.mjs');return getSQLiteDatabase() as unknown as D1Database;}const {env}=await import('cloudflare:workers');if(!env.DB)throw new Error('The global world database is unavailable. Please retry shortly.');return env.DB;}
+export async function sharedD1(){const {SharedWorld}=await import('./d1');return new SharedWorld(await sharedDatabase());}
 const COOKIE='silicon_guest';
 async function tokenHash(token:string){const data=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(token));return Array.from(new Uint8Array(data),b=>b.toString(16).padStart(2,'0')).join('');}
 export function requestUrl(req:Request){const url=new URL(req.url),publicUrl=process.env.SITE_URL||process.env.RENDER_EXTERNAL_URL;return process.env.SQLITE_PATH&&publicUrl?new URL(url.pathname+url.search,publicUrl):url;}

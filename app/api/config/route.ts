@@ -1,2 +1,3 @@
-import { config, response } from '@/lib/silicon/server';
-export function GET(){return response({...config(),contractAddress:process.env.CONTRACT_ADDRESS?.trim()||'XXXXX'});}
+import { config, endpoint } from '@/lib/silicon/server';
+import { contractAddress } from '@/lib/silicon/admin';
+export function GET(){return endpoint(async()=>({...config(),contractAddress:await contractAddress()}));}

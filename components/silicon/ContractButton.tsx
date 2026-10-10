@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Check, Copy } from 'lucide-react';
 
 export default function ContractButton({address}:{address:string}) {
  const [status,setStatus]=useState<'idle'|'copied'|'error'>('idle');
+ useEffect(()=>setStatus('idle'),[address]);
  async function copy() {
   try { await navigator.clipboard.writeText(address);setStatus('copied'); }
   catch { setStatus('error'); }
