@@ -1,0 +1,2 @@
+import {endpoint,agentHistory} from '@/lib/silicon/server';
+export function GET(req:Request){return endpoint(async()=>{const params=new URL(req.url).searchParams,id=params.get('agent')||'',before=params.has('before')?Number(params.get('before')):undefined;if(!/^[a-zA-Z0-9-]{1,64}$/.test(id)||before!==undefined&&!Number.isSafeInteger(before))return Response.json({error:'Invalid history request.'},{status:400});return agentHistory(id,before);});}

@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: silicon-man
+    runtime: node
+    plan: starter
+    numInstances: 1
+    buildCommand: npm ci --include=dev && npm run build:render
+    startCommand: npm run start:render
+    healthCheckPath: /healthz
+    disk:
+      name: silicon-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 24.19.0
+      - key: NODE_ENV
+        value: production
+      - key: SQLITE_PATH
+        value: /var/data/silicon.sqlite
+      - key: WORLD_MODE
+        value: shared-scripted
